@@ -4,7 +4,7 @@ describe VirtualSystem do
 
   describe 'MyLampService' do
     let(:xml) do
-      (Nokogiri::XML(open('../../fixtures/my_lamp_service_virtual_system.xml'))/'VirtualSystem').first
+      (Nokogiri::XML(open('spec/fixtures/my_lamp_service_virtual_system.xml'))/'VirtualSystem').first
     end
     let(:vm) { VirtualSystem.new(xml) }
     subject { vm }
@@ -44,7 +44,23 @@ describe VirtualSystem do
         its(['InstanceID']) { should == "3" }
         its(['ResourceType']) { should == "10" }
       end
+    end
 
+    describe 'scsi adapters' do
+      subject { vm.scsi_adapters }
+      it { should be_an(Array) }
+      it { should have(1).elements }
+
+      describe 'first adapter' do
+        subject { vm.scsi_adapters.first }
+        its(['Caption']) { should == "SCSI Controller 0 - LSI Logic" }
+        its(['ElementName']) { should == "LSILOGIC" }
+        its(['InstanceID']) { should == "4" }
+        its(['ResourceSubType']) { should == "LsiLogic" }
+        its(['ResourceType']) { should == "6" }
+
+
+      end
     end
   end
 end

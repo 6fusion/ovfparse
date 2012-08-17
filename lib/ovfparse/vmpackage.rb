@@ -5,7 +5,6 @@ class VmPackage
   @url
   @base_path
   @name
-  @version
   @protocol
   @size
   @xml
@@ -257,13 +256,13 @@ class VmPackage
       capacity = node['capacity']
       units    = node['capacityAllocationUnits']
       if (units == "byte * 2^40")
-        capacity = (capacity.to_i * 1099511627776).to_s
+        capacity = (capacity.to_i * 2**40).to_s
       elsif (units == "byte * 2^30")
-        capacity = (capacity.to_i * 1073741824).to_s
+        capacity = (capacity.to_i * 2**30).to_s
       elsif (units == "byte * 2^20")
-        capacity = (capacity.to_i * 1048576).to_s
+        capacity = (capacity.to_i * 2**20).to_s
       elsif (units == "byte * 2^10")
-        capacity = (capacity.to_i * 1024).to_s
+        capacity = (capacity.to_i * 2**10).to_s
       end
       thin_size = node['populatedSize']
       disks.push({ 'name' => node['diskId'], 'location' => filenames[node['fileRef']], 'size' => capacity, 'thin_size' => (thin_size || "-1") })
@@ -701,8 +700,14 @@ class VmPackage
   end
 
   # return a list of all VirtualSystem elements
-  def virtual_machines
-    xml/'VirtualSystem'
+  def virtual_systems
+    (xml/'VirtualSystem').map do |vs|
+      VirtualSystem.new(vs)
+    end
+  end
+
+  def version
+    @version ||= ((xml.at('Envelope'))['version'])
   end
 
 end

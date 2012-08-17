@@ -1,27 +1,32 @@
 class VirtualSystem
 
+  # http://blogs.vmware.com/vapp/2009/11/virtual-hardware-in-ovf-part-1.html
   RESOURCE_TYPES = {
-    :cpu      => 3,
-    :memory   => 4,
-    :ide      => 5,
-    :scsi     => 6,
-    :ethernet => 10,
-    :floppy   => 14,
-    :cd       => 15,
-    :dvd      => 16,
-    :disk     => 17,
-    :usb      => 23
+    :cpu           => 3,
+    :memory        => 4,
+    :ide_adapters  => 5,
+    :scsi_adapters => 6,
+    :network_cards => 10,
+    :floppy_drives => 14,
+    :cd_drives     => 15,
+    :dvd_drives    => 16,
+    :disks         => 17,
+    :usb           => 23
   }
 
   attr_accessor :xml
 
   def initialize(_xml)
-    self.xml              = _xml
-
-
+    self.xml = _xml
   end
 
-#  protected
+  (RESOURCE_TYPES.keys - [:cpu, :memory]).each do |resource|
+    define_method(resource.to_sym) do
+      (hardware_resources(resource)).map do |r|
+        Hash[*r.element_children.map { |x| [x.name, x.text] }.flatten]
+      end
+    end
+  end
 
   def name
     @name ||= self.xml['id']
@@ -32,47 +37,37 @@ class VirtualSystem
   end
 
   def optical_drives
-    @optiical_drives ||= (hardware_resource(:cd) + hardware_resource(:dvd)).map do |disk|
-      Hash[*disk.element_children.map { |x| [x.name, x.text] }.flatten]
-    end
-  end
-
-  def disks
-    @disks ||= (hardware_resources(:disk)).map do |disk|
-      Hash[*disk.element_children.map { |x| [x.name, x.text] }.flatten]
-    end
-  end
-
-  def network_cards
-    @network_cards ||= (hardware_resources(:ethernet)).map do |ethernet|
-      Hash[*ethernet.element_children.map { |x| [x.name, x.text] }.flatten]
-    end
+    @optical_drives ||= cd_drives + dvd_drives
   end
 
   def cpus
-    @cpus ||= (hardware_resource(:cpu)/'VirtualQuantity').text.to_i
+    @cpus ||= (hardware_resource(:cpu).at('VirtualQuantity')).text.to_i
   end
 
   def memory
-    @memory ||= (hardware_resource(:memory)/'VirtualQuantity').text.to_i
+    @memory ||= (hardware_resource(:memory).at('VirtualQuantity')).text.to_i
   end
 
   def operating_system
     @operating_system ||= (self.xml/'OperatingSystemSection/Description').text
   end
 
+  def product_sections
+
+  end
+
   protected
 
   def hardware
-    self.xml/'VirtualHardwareSection'
+    self.xml.at('VirtualHardwareSection')
   end
 
   def hardware_resource(id)
-    (self.hardware.at("Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")).parent
+    (self.hardware.at(".//Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")).parent
   end
 
   def hardware_resources(id)
-    (self.hardware.xpath("Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")).map do |node|
+    (self.hardware.xpath(".//Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")).map do |node|
       node.parent
     end
   end

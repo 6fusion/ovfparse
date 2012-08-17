@@ -22,7 +22,7 @@ class VmPackage
 
   @type = nil
 
-  DEBUG_MODE          = false
+  DEBUG_MODE          = true
 
   # List of attributes in an OVF product that we will extract / set
   PRODUCT_ATTRIBUTES  = [{ 'full_name' => 'ovf:instance', 'node_ref' => 'instance', 'attribute_ref' => 'instance' },
@@ -92,7 +92,7 @@ class VmPackage
     @name = uri.split('/').last
   end
 
-  def self.create uri
+  def self.create(uri)
     (@protocol, @url) = uri.split(":", 2) unless !uri
     @url.sub!(/^\/{0,2}/, '')
     @protocol.downcase
@@ -133,7 +133,7 @@ class VmPackage
   def loadElementRefs
     children = @xml.root.children
 
-    @references    = getChildByName(xml.root, 'References')
+    @references    = getChildByName(xml.root, 'References').children
     @virtualSystem = getChildByName(xml.root, 'VirtualSystem')
 
     @diskSection    = getChildByName(xml.root, 'DiskSection') || @virtualSystem.add_previous_sibling(xml.create_element('DiskSection', { }))
@@ -183,6 +183,17 @@ class VmPackage
 
     return data
 
+  end
+
+  # use nokogiri's built in validation
+  def validate
+    self.xml.validate
+  end
+
+  def valid?
+    valid = self.xml.validate
+    return nil if valid.nil?
+    valid.empty?
   end
 
   def checkschema(schema)
@@ -687,6 +698,11 @@ class VmPackage
 
   def xpath(string)
     puts @xml.xpath(string)
+  end
+
+  # return a list of all VirtualSystem elements
+  def virtual_machines
+    xml/'VirtualSystem'
   end
 
 end

@@ -188,6 +188,7 @@
 				<rasd:Parent>4</rasd:Parent>
 				<rasd:ResourceType>17</rasd:ResourceType>
 			</Item>
+
 		</VirtualHardwareSection>
 	</VirtualSystem>
 </Envelope>

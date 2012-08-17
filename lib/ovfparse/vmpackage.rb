@@ -123,7 +123,10 @@ class VmPackage
     end
   end
 
+  # read in and parse the OVF, should return the VmPackage object itself
+  # @return [VmPackage]
   def fetch
+    self
   end
 
   # Caches all of the base elements inside Envelope for fast access
@@ -696,6 +699,7 @@ class HttpVmPackage < VmPackage
     end
 
     loadElementRefs
+    self
   end
 end
 
@@ -718,6 +722,7 @@ class HttpsVmPackage < VmPackage
 
     File.unlink(@name)
     loadElementRefs
+    self
   end
 
 
@@ -747,6 +752,7 @@ class FileVmPackage < VmPackage
       config.noblanks.strict.noent
     end
     loadElementRefs
+    self
   end
 end
 

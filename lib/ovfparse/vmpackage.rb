@@ -54,10 +54,18 @@ class VmPackage
   OVF_NAMESPACE = { 'ovf' => 'http://schemas.dmtf.org/ovf/envelope/1' }
 
 
-  attr_accessor :url, :base_path, :name, :version, :state, :protocol, :size, :xml, :references, :diskSection, :networkSection, :virtualSystem
-
-  def initialize
-  end
+  attr_accessor :url,
+                :base_path,
+                :name,
+                :version,
+                :state,
+                :protocol,
+                :size,
+                :xml,
+                :references,
+                :diskSection,
+                :networkSection,
+                :virtualSystem
 
   def to_s
 #    (@name + " from " + @url + "\n")

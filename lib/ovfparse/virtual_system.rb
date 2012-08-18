@@ -33,7 +33,7 @@ class VirtualSystem
   end
 
   def info
-    @info ||= (self.xml.at('.//Info')).text
+    @info ||= (self.xml.at('Info')).text
   end
 
   def optical_drives
@@ -41,11 +41,11 @@ class VirtualSystem
   end
 
   def cpus
-    @cpus ||= (hardware_resource(:cpu).at('VirtualQuantity')).text.to_i
+    @cpus ||= (hardware_resources(:cpu).first.at('VirtualQuantity',{})).text.to_i
   end
 
   def memory
-    @memory ||= (hardware_resource(:memory).at('VirtualQuantity')).text.to_i
+    @memory ||= (hardware_resources(:memory).first.at_xpath('VirtualQuantity')).text.to_i
   end
 
   def operating_system
@@ -59,17 +59,17 @@ class VirtualSystem
   protected
 
   def hardware
-    self.xml.at('VirtualHardwareSection')
-  end
-
-  def hardware_resource(id)
-    (self.hardware.at(".//Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")).parent
+    #self.xml.document.fragment(self.xml.at('VirtualHardwareSection').to_s)
+    (self.xml.at('VirtualHardwareSection'))
   end
 
   def hardware_resources(id)
-    (self.hardware.xpath(".//Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")).map do |node|
-      node.parent
+    found = self.hardware.xpath("Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")
+    result = []
+    found.each do |node|
+      result << node.parent
     end
+    result
   end
 
 

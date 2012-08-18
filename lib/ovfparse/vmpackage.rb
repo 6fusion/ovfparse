@@ -130,6 +130,8 @@ class VmPackage
 
   # Caches all of the base elements inside Envelope for fast access
   def loadElementRefs
+    # TODO: fix the use of namespaces
+    @xml.document.remove_namespaces!
     children = @xml.root.children
 
     @references    = getChildByName(xml.root, 'References').children

@@ -134,7 +134,7 @@ describe 'VmPackage' do
 
         describe 'SCSI Controller' do
           it { should have(1).scsi_controllers }
-          describe 'scsi controller 1' do
+          describe 'scsi controller 0' do
             subject { ovf.virtual_systems.first.scsi_controllers.first }
             its(['Address']) { should == "0" }
             its(['Description']) { should == "SCSI Controller" }
@@ -147,10 +147,29 @@ describe 'VmPackage' do
 
         describe 'floppy drives' do
           it { should have(1).floppy_drives }
+          describe 'floppy drive 1' do
+            subject { ovf.virtual_systems.first.floppy_drives.first }
+            its(['AddressOnParent']) { should == "0" }
+            its(['AutomaticAllocation']) { should == "false" }
+            its(['Description']) { should == "Floppy Drive" }
+            its(['ElementName']) { should == "Floppy drive 1" }
+            its(['InstanceID']) { should == "12" }
+            its(['ResourceType']) { should == "14" }
+          end
         end
 
         describe 'CD/DVD drives' do
           it { should have(1).optical_drives }
+          describe 'optical drive 1' do
+            subject { ovf.virtual_systems.first.optical_drives.first }
+            its(['AddressOnParent']) { should == "0" }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['ElementName']) { should == "CD/DVD drive 1" }
+            its(['HostResource']) { should == "ovf:/file/file2" }
+            its(['Parent']) { should == "4" }
+            its(['InstanceID']) { should == "7" }
+            its(['ResourceType']) { should == "15" }
+          end
         end
 
         describe 'disks' do

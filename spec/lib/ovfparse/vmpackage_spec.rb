@@ -178,6 +178,50 @@ describe 'VmPackage' do
         end
         describe 'network cards' do
           it { should have(4).network_cards }
+          describe 'network card 1' do
+            subject { ovf.virtual_systems.first.network_cards[0] }
+            its(['AddressOnParent']) { should == "7" }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "VINET01" }
+            its(['Description']) { should == "VmxNet3 ethernet adapter on \"VINET01\"" }
+            its(['ElementName']) { should == "Network adapter 1" }
+            its(['InstanceID']) { should == "8" }
+            its(['ResourceSubType']) { should == "VmxNet3" }
+            its(['ResourceType']) { should == "10" }
+          end
+          describe 'network card 2' do
+            subject { ovf.virtual_systems.first.network_cards[1] }
+            its(['AddressOnParent']) { should == "8" }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "VINET02" }
+            its(['Description']) { should == "E1000 ethernet adapter on \"VINET02\"" }
+            its(['ElementName']) { should == "Network adapter 2" }
+            its(['InstanceID']) { should == "9" }
+            its(['ResourceSubType']) { should == "E1000" }
+            its(['ResourceType']) { should == "10" }
+          end
+          describe 'network card 3' do
+            subject { ovf.virtual_systems.first.network_cards[2] }
+            its(['AddressOnParent']) { should == "9" }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "VINET03" }
+            its(['Description']) { should == "VmxNet3 ethernet adapter on \"VINET03\"" }
+            its(['ElementName']) { should == "Network adapter 3" }
+            its(['InstanceID']) { should == "10" }
+            its(['ResourceSubType']) { should == "VmxNet3" }
+            its(['ResourceType']) { should == "10" }
+          end
+          describe 'network card 4' do
+            subject { ovf.virtual_systems.first.network_cards[3] }
+            its(['AddressOnParent']) { should == "10" }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "VINET04" }
+            its(['Description']) { should == "E1000 ethernet adapter on \"VINET04\"" }
+            its(['ElementName']) { should == "Network adapter 4" }
+            its(['InstanceID']) { should == "11" }
+            its(['ResourceSubType']) { should == "E1000" }
+            its(['ResourceType']) { should == "10" }
+          end
 
         end
       end

@@ -280,7 +280,7 @@ class VmPackage
     getChildrenByName(networkSection, 'Network').each { |node|
       descriptionNode = getChildByName(node, 'Description')
       text            = descriptionNode.nil? ? '' : descriptionNode.text
-      networks.push({ 'location' => node['name'], 'notes' => text })
+      networks.push({ 'name' => node['name'], 'description' => text })
     }
     return networks
   end

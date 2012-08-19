@@ -15,7 +15,6 @@ describe 'VmPackage' do
 
     describe 'files' do
       it { should have(1).files }
-
     end
 
     describe 'virtual_systems' do
@@ -86,6 +85,22 @@ describe 'VmPackage' do
 
     describe 'networks' do
       it { should have(4).networks }
+      describe 'network 1' do
+        subject { ovf.networks[0]}
+        its(['name']) { should == "VINET01" }
+      end
+      describe 'network 2' do
+        subject { ovf.networks[1]}
+        its(['name']) { should == "VINET02" }
+      end
+      describe 'network 3' do
+        subject { ovf.networks[2]}
+        its(['name']) { should == "VINET03" }
+      end
+      describe 'network 4' do
+        subject { ovf.networks[3]}
+        its(['name']) { should == "VINET04" }
+      end
     end
 
     describe 'virtual_systems' do

@@ -2,16 +2,16 @@ class VirtualSystem
 
   # http://blogs.vmware.com/vapp/2009/11/virtual-hardware-in-ovf-part-1.html
   RESOURCE_TYPES = {
-    :cpu           => 3,
-    :memory        => 4,
-    :ide_adapters  => 5,
-    :scsi_adapters => 6,
-    :network_cards => 10,
-    :floppy_drives => 14,
-    :cd_drives     => 15,
-    :dvd_drives    => 16,
-    :disks         => 17,
-    :usb           => 23
+    :cpu              => 3,
+    :memory           => 4,
+    :ide_controllers  => 5,
+    :scsi_controllers => 6,
+    :network_cards    => 10,
+    :floppy_drives    => 14,
+    :cd_drives        => 15,
+    :dvd_drives       => 16,
+    :disks            => 17,
+    :usb              => 23
   }
 
   attr_accessor :xml
@@ -41,7 +41,7 @@ class VirtualSystem
   end
 
   def cpus
-    @cpus ||= (hardware_resources(:cpu).first.at('VirtualQuantity',{})).text.to_i
+    @cpus ||= (hardware_resources(:cpu).first.at('VirtualQuantity', { })).text.to_i
   end
 
   def memory
@@ -64,7 +64,7 @@ class VirtualSystem
   end
 
   def hardware_resources(id)
-    found = self.hardware.xpath("Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")
+    found  = self.hardware.xpath("Item/ResourceType[text()='#{RESOURCE_TYPES[id]}']")
     result = []
     found.each do |node|
       result << node.parent

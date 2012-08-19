@@ -86,19 +86,19 @@ describe 'VmPackage' do
     describe 'networks' do
       it { should have(4).networks }
       describe 'network 1' do
-        subject { ovf.networks[0]}
+        subject { ovf.networks[0] }
         its(['name']) { should == "VINET01" }
       end
       describe 'network 2' do
-        subject { ovf.networks[1]}
+        subject { ovf.networks[1] }
         its(['name']) { should == "VINET02" }
       end
       describe 'network 3' do
-        subject { ovf.networks[2]}
+        subject { ovf.networks[2] }
         its(['name']) { should == "VINET03" }
       end
       describe 'network 4' do
-        subject { ovf.networks[3]}
+        subject { ovf.networks[3] }
         its(['name']) { should == "VINET04" }
       end
     end
@@ -112,8 +112,55 @@ describe 'VmPackage' do
         its(:operating_system) { should == "Red Hat Enterprise Linux 6 (64-bit)" }
         its(:cpus) { should == 8 }
         its(:memory) { should == 10240 }
-        it { should have(2).disks }
-        it { should have(4).network_cards }
+        describe 'IDE Controller' do
+          it { should have(2).ide_controllers }
+          describe 'ide controller 0' do
+            subject { ovf.virtual_systems.first.ide_controllers[0] }
+            its(['Address']) { should == "1" }
+            its(['Description']) { should == "IDE Controller" }
+            its(['ElementName']) { should == "IDE 1" }
+            its(['InstanceID']) { should == "4" }
+            its(['ResourceType']) { should == "5" }
+          end
+          describe 'ide controller 1' do
+            subject { ovf.virtual_systems.first.ide_controllers[1] }
+            its(['Address']) { should == "0" }
+            its(['Description']) { should == "IDE Controller" }
+            its(['ElementName']) { should == "IDE 0" }
+            its(['InstanceID']) { should == "5" }
+            its(['ResourceType']) { should == "5" }
+          end
+        end
+
+        describe 'SCSI Controller' do
+          it { should have(1).scsi_controllers }
+          describe 'scsi controller 1' do
+            subject { ovf.virtual_systems.first.scsi_controllers.first }
+            its(['Address']) { should == "0" }
+            its(['Description']) { should == "SCSI Controller" }
+            its(['ElementName']) { should == "SCSI controller 0" }
+            its(['InstanceID']) { should == "3" }
+            its(['ResourceSubType']) { should == "VirtualSCSI" }
+            its(['ResourceType']) { should == "6" }
+          end
+        end
+
+        describe 'floppy drives' do
+          it { should have(1).floppy_drives }
+        end
+
+        describe 'CD/DVD drives' do
+          it { should have(1).optical_drives }
+        end
+
+        describe 'disks' do
+          it { should have(2).disks }
+
+        end
+        describe 'network cards' do
+          it { should have(4).network_cards }
+
+        end
       end
     end
 
@@ -121,9 +168,13 @@ describe 'VmPackage' do
       it { should have(1).annotations }
       describe 'first annotation' do
         subject { ovf.annotations.first }
-        it { should == "Created using vSphere 5.0\nHardware Version 8"}
+        it { should == "Created using vSphere 5.0\nHardware Version 8" }
       end
     end
+
+  end
+
+  describe 'ComplexVAPP.ovf' do
 
   end
 

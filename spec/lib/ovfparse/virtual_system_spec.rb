@@ -47,12 +47,12 @@ describe VirtualSystem do
     end
 
     describe 'scsi adapters' do
-      subject { vm.scsi_adapters }
+      subject { vm.scsi_controllers }
       it { should be_an(Array) }
       it { should have(1).elements }
 
       describe 'first adapter' do
-        subject { vm.scsi_adapters.first }
+        subject { vm.scsi_controllers.first }
         its(['Caption']) { should == "SCSI Controller 0 - LSI Logic" }
         its(['ElementName']) { should == "LSILOGIC" }
         its(['InstanceID']) { should == "4" }

@@ -297,7 +297,7 @@ class VmPackage
   alias :files :getVmReferences
 
   def annotations
-    self.xml/"Annotation"
+    (self.xml/"Annotation").map {|annotation| annotation.text }
   end
 
   def getVmCPUs

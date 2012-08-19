@@ -119,7 +119,10 @@ describe 'VmPackage' do
 
     describe 'annotations' do
       it { should have(1).annotations }
-
+      describe 'first annotation' do
+        subject { ovf.annotations.first }
+        it { should == "Created using vSphere 5.0\nHardware Version 8"}
+      end
     end
 
   end

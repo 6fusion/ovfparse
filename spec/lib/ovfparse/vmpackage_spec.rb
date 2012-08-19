@@ -6,6 +6,7 @@ describe 'VmPackage' do
     subject { ovf }
     it { should be_a_kind_of(FileVmPackage) }
     its(:url) { should eql('spec/fixtures/someOVF.ovf') }
+    its(:uri) { should eql('file://spec/fixtures/someOVF.ovf') }
     its(:base_path) { should be_nil }
     its(:name) { should eql('someOVF.ovf') }
     its(:version) { should == "1.0" }
@@ -18,8 +19,8 @@ describe 'VmPackage' do
     describe 'first virtual systems' do
       subject { ovf.virtual_systems.first }
       its(:name) { should == "MyLampService" }
-      its(:info) { should == "Single-VM Virtual appliance with LAMP stack"}
-      its(:operating_system) { should == "Linux 2.6.x"}
+      its(:info) { should == "Single-VM Virtual appliance with LAMP stack" }
+      its(:operating_system) { should == "Linux 2.6.x" }
       its(:cpus) { should == 1 }
       its(:memory) { should == 256 }
       it { should have(1).disks }
@@ -33,15 +34,54 @@ describe 'VmPackage' do
     subject { ovf }
     it { should be_a_kind_of(FileVmPackage) }
     its(:url) { should eql('spec/fixtures/complexOVF-VMW-V8.ovf') }
+    its(:uri) { should eql('file://spec/fixtures/complexOVF-VMW-V8.ovf') }
     its(:base_path) { should be_nil }
     its(:name) { should eql('complexOVF-VMW-V8.ovf') }
     its(:version) { should be_nil }
     its(:protocol) { should == "file" }
     #it { should be_valid }
-    its(:references) { should have(3).entries }
 
-    its(:virtual_systems) { should have(1).entries }
+    it { should have(3).files }
+    describe 'files' do
+      describe 'file1' do
+        subject { ovf.files[0] }
+        its(['id']) { should == "file1"}
+        its(['href']) { should == "ComplexOVF-VMW-V8-disk1.vmdk"}
+        its(['size']) { should == "69632"}
+      end
+      describe 'file2' do
+        subject { ovf.files[1] }
+        its(['id']) { should == "file2"}
+        its(['href']) { should == "ComplexOVF-VMW-V8-file1.iso"}
+        its(['size']) { should == "203423744"}
+      end
+      describe 'file3' do
+        subject { ovf.files[2] }
+        its(['id']) { should == "file3"}
+        its(['href']) { should == "ComplexOVF-VMW-V8-disk2.vmdk"}
+        its(['size']) { should == "70144"}
+      end
+    end
 
+    it { should have(2).disks }
+    describe 'disks' do
+      describe 'vmdisk1' do
+        subject { ovf.disks.first }
+        its(['name']) { should == "vmdisk1" }
+        its(['location']) { should == "" }
+        its(['size']) { should == "17179869184" }
+      end
+      describe 'vmdisk1' do
+        subject { ovf.disks[1] }
+        its(['name']) { should == "vmdisk2" }
+        its(['location']) { should == "" }
+        its(['size']) { should == "21474836480" }
+      end
+    end
+
+    it { should have(4).networks }
+
+    it { should have(1).virtual_systems }
     describe 'virtual system ComplexOVF-VMW-V8' do
       subject { ovf.virtual_systems.first }
       its(:name) { should == "ComplexOVF-VMW-V8" }
@@ -49,8 +89,11 @@ describe 'VmPackage' do
       its(:operating_system) { should == "Red Hat Enterprise Linux 6 (64-bit)" }
       its(:cpus) { should == 8 }
       its(:memory) { should == 10240 }
+      it { should have(2).disks }
+      it { should have(4).network_cards }
     end
 
+    it { should have(1).annotations }
 
   end
 

@@ -72,17 +72,11 @@ class VmPackage
   end
 
   def uri
-    if (nil==@protocol) then
-      return @url
-    else
-      return (@protocol + "://" + @url)
-    end
+    protocol ? "#{protocol}://#{url}" : url
   end
 
   def initialize(uri)
-    if (URI::HTTP==uri.class) then
-      uri = uri.to_s
-    end
+    uri = uri.to_s if uri.kind_of?(URI::HTTP)
 
     (@protocol, @url) = uri.split(":", 2) unless !uri
     @url.sub!(/^\/{0,2}/, '')
@@ -91,6 +85,7 @@ class VmPackage
     @name = uri.split('/').last
   end
 
+  # @param [Object] uri
   def self.create(uri)
     (@protocol, @url) = uri.split(":", 2) unless !uri
     @url.sub!(/^\/{0,2}/, '')
@@ -161,23 +156,19 @@ class VmPackage
       puts "WARNING: NoSuchMethod Error: " + method.to_s + " ...trying XPath query \n"
     end
 
-    # try with namespace
-    data = @xml.xpath("//ovf:" + method.to_s)
-
-
-    # try without namespace
-    if nil===data then
-      data = @xml.xpath("//" + method.to_s)
-    end
+    data = @xml.xpath("//ovf:#{method}") ||
+      @xml.xpath("//#{method}")
 
     # try changing method name without namespace
     # i.e. egg_and_ham.classify #=> "EggAndHam"
+    # TODO: fix... classify is not standard ruby, it's a rails thing
     if nil==data then
       data = @xml.xpath("//" + method.to_s.classify)
     end
 
     # try changing method name with namespace
     # i.e. egg_and_ham.classify #=> "EggAndHam"
+    # TODO: fix... classify is not standard ruby, it's a rails thing
     if nil==data then
       data = @xml.xpath("//ovf:" + method.to_s.classify)
     end
@@ -248,33 +239,44 @@ class VmPackage
   end
 
   def getVmDisks
-    disks     = Array.new
-    filenames = Hash.new
-    getChildrenByName(references, 'File').each { |node|
+    disks     = []
+    filenames = { }
+    getChildrenByName(references, 'File').each do |node|
       filenames[node['id']] = node['href']
-    }
+    end
 
-    getChildrenByName(diskSection, 'Disk').each { |node|
-      capacity = node['capacity']
-      units    = node['capacityAllocationUnits']
-      if (units == "byte * 2^40")
-        capacity = (capacity.to_i * 2**40).to_s
-      elsif (units == "byte * 2^30")
-        capacity = (capacity.to_i * 2**30).to_s
-      elsif (units == "byte * 2^20")
-        capacity = (capacity.to_i * 2**20).to_s
-      elsif (units == "byte * 2^10")
-        capacity = (capacity.to_i * 2**10).to_s
+    getChildrenByName(diskSection, 'Disk').each do |node|
+      capacity        = node['capacity']
+      units           = node['capacityAllocationUnits']
+      unit_multiplier = case units
+        when "byte * 2^40"
+          2**40
+        when "byte * 2^30"
+          2**30
+        when "byte * 2^20"
+          2**20
+        when "byte * 2^10"
+          2**10
+        else
+          1
       end
-      thin_size = node['populatedSize']
-      disks.push({ 'name' => node['diskId'], 'location' => filenames[node['fileRef']], 'size' => capacity, 'thin_size' => (thin_size || "-1") })
-    }
-
-    return disks
+      capacity        = (capacity.to_i * unit_multiplier).to_s
+      thin_size       = node['populatedSize']
+      disks << {
+        'name'      => node['diskId'],
+        'location'  => filenames[node['fileRef']],
+        'size'      => capacity,
+        'format'    => node['format'],
+        'thin_size' => (thin_size || "-1")
+      }
+    end
+    disks
   end
 
+  alias :disks :getVmDisks
+
   def getVmNetworks
-    networks = Array.new
+    networks = []
     getChildrenByName(networkSection, 'Network').each { |node|
       descriptionNode = getChildByName(node, 'Description')
       text            = descriptionNode.nil? ? '' : descriptionNode.text
@@ -283,12 +285,20 @@ class VmPackage
     return networks
   end
 
+  alias :networks :getVmNetworks
+
   def getVmReferences
-    refs = Array.new
-    getChildrenByName(references, 'File').each { |node|
-      refs.push({ 'href' => node['href'], 'id' => node['id'], 'size' => node['size'] })
-    }
-    return refs
+    refs = []
+    (self.xml/"References/File").each do |file|
+      refs << Hash[*file.attributes.map {|k,v| [k, v.to_s]}.flatten]
+    end
+    refs
+  end
+
+  alias :files :getVmReferences
+
+  def annotations
+    self.xml/"Annotation"
   end
 
   def getVmCPUs
@@ -420,7 +430,7 @@ class VmPackage
         parentNode.content == currentAddress
       end
     }
-    childAddresses     = Array.new
+    childAddresses     = []
     controllerChildren.each { |child|
       childAddresses.push(getChildByName(child, 'AddressOnParent').content)
     }
@@ -490,7 +500,7 @@ class VmPackage
     diskNodes = getChildrenByName(diskSection, 'Disk')
     vhs       = getChildByName(virtualSystem, 'VirtualHardwareSection')
 
-    icons = Array.new
+    icons = []
     getChildrenByName(getChildByName(virtualSystem, 'ProductSection'), 'Icon').each { |node|
       icons.push(node['fileRef'])
     }
@@ -708,6 +718,7 @@ class VmPackage
     end
   end
 
+  # return ovf version if it is specified in the envelope
   def version
     @version ||= ((xml.at('Envelope'))['version'])
   end

@@ -86,7 +86,6 @@ describe 'VmPackage' do
 
     describe 'networks' do
       it { should have(4).networks }
-
     end
 
     describe 'virtual_systems' do

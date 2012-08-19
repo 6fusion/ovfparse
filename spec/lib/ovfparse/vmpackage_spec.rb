@@ -20,7 +20,8 @@ describe 'VmPackage' do
     describe 'virtual_systems' do
       it { should have(1).virtual_systems }
       describe 'first virtual systems' do
-        subject { ovf.virtual_systems.first }
+        let(:vm) { ovf.virtual_systems.first }
+        subject { vm }
         its(:name) { should == "MyLampService" }
         its(:info) { should == "Single-VM Virtual appliance with LAMP stack" }
         its(:operating_system) { should == "Linux 2.6.x" }
@@ -106,7 +107,8 @@ describe 'VmPackage' do
     describe 'virtual_systems' do
       it { should have(1).virtual_systems }
       describe 'virtual system ComplexOVF-VMW-V8' do
-        subject { ovf.virtual_systems.first }
+        let(:vm) { ovf.virtual_systems.first }
+        subject { vm }
         its(:name) { should == "ComplexOVF-VMW-V8" }
         its(:info) { should == "A virtual machine" }
         its(:operating_system) { should == "Red Hat Enterprise Linux 6 (64-bit)" }
@@ -115,7 +117,7 @@ describe 'VmPackage' do
         describe 'IDE Controller' do
           it { should have(2).ide_controllers }
           describe 'ide controller 0' do
-            subject { ovf.virtual_systems.first.ide_controllers[0] }
+            subject { vm.ide_controllers[0] }
             its(['Address']) { should == "1" }
             its(['Description']) { should == "IDE Controller" }
             its(['ElementName']) { should == "IDE 1" }
@@ -123,7 +125,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "5" }
           end
           describe 'ide controller 1' do
-            subject { ovf.virtual_systems.first.ide_controllers[1] }
+            subject { vm.ide_controllers[1] }
             its(['Address']) { should == "0" }
             its(['Description']) { should == "IDE Controller" }
             its(['ElementName']) { should == "IDE 0" }
@@ -135,7 +137,7 @@ describe 'VmPackage' do
         describe 'SCSI Controller' do
           it { should have(1).scsi_controllers }
           describe 'scsi controller 0' do
-            subject { ovf.virtual_systems.first.scsi_controllers.first }
+            subject { vm.scsi_controllers.first }
             its(['Address']) { should == "0" }
             its(['Description']) { should == "SCSI Controller" }
             its(['ElementName']) { should == "SCSI controller 0" }
@@ -148,7 +150,7 @@ describe 'VmPackage' do
         describe 'floppy drives' do
           it { should have(1).floppy_drives }
           describe 'floppy drive 1' do
-            subject { ovf.virtual_systems.first.floppy_drives.first }
+            subject { vm.floppy_drives.first }
             its(['AddressOnParent']) { should == "0" }
             its(['AutomaticAllocation']) { should == "false" }
             its(['Description']) { should == "Floppy Drive" }
@@ -161,7 +163,7 @@ describe 'VmPackage' do
         describe 'CD/DVD drives' do
           it { should have(1).optical_drives }
           describe 'optical drive 1' do
-            subject { ovf.virtual_systems.first.optical_drives.first }
+            subject { vm.optical_drives.first }
             its(['AddressOnParent']) { should == "0" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['ElementName']) { should == "CD/DVD drive 1" }
@@ -179,7 +181,7 @@ describe 'VmPackage' do
         describe 'network cards' do
           it { should have(4).network_cards }
           describe 'network card 1' do
-            subject { ovf.virtual_systems.first.network_cards[0] }
+            subject { vm.network_cards[0] }
             its(['AddressOnParent']) { should == "7" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET01" }
@@ -190,7 +192,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 2' do
-            subject { ovf.virtual_systems.first.network_cards[1] }
+            subject { vm.network_cards[1] }
             its(['AddressOnParent']) { should == "8" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET02" }
@@ -201,7 +203,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 3' do
-            subject { ovf.virtual_systems.first.network_cards[2] }
+            subject { vm.network_cards[2] }
             its(['AddressOnParent']) { should == "9" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET03" }
@@ -212,7 +214,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 4' do
-            subject { ovf.virtual_systems.first.network_cards[3] }
+            subject { vm.network_cards[3] }
             its(['AddressOnParent']) { should == "10" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET04" }
@@ -340,7 +342,8 @@ describe 'VmPackage' do
     describe 'virtual_systems' do
       it { should have(2).virtual_systems }
       describe 'virtual system 1' do
-        subject { ovf.virtual_systems[0] }
+        let(:vm) { ovf.virtual_systems[0] }
+        subject { vm }
         its(:name) { should == "ComplexOVF-VMW-V8" }
         its(:info) { should == "A virtual machine" }
         its(:operating_system) { should == "Red Hat Enterprise Linux 6 (64-bit)" }
@@ -349,7 +352,7 @@ describe 'VmPackage' do
         describe 'IDE Controller' do
           it { should have(2).ide_controllers }
           describe 'ide controller 0' do
-            subject { ovf.virtual_systems.first.ide_controllers[0] }
+            subject { vm.ide_controllers[0] }
             its(['Address']) { should == "1" }
             its(['Description']) { should == "IDE Controller" }
             its(['ElementName']) { should == "IDE 1" }
@@ -357,7 +360,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "5" }
           end
           describe 'ide controller 1' do
-            subject { ovf.virtual_systems.first.ide_controllers[1] }
+            subject { vm.ide_controllers[1] }
             its(['Address']) { should == "0" }
             its(['Description']) { should == "IDE Controller" }
             its(['ElementName']) { should == "IDE 0" }
@@ -369,7 +372,7 @@ describe 'VmPackage' do
         describe 'SCSI Controller' do
           it { should have(1).scsi_controllers }
           describe 'scsi controller 0' do
-            subject { ovf.virtual_systems.first.scsi_controllers.first }
+            subject { vm.scsi_controllers.first }
             its(['Address']) { should == "0" }
             its(['Description']) { should == "SCSI Controller" }
             its(['ElementName']) { should == "SCSI controller 0" }
@@ -382,7 +385,7 @@ describe 'VmPackage' do
         describe 'floppy drives' do
           it { should have(1).floppy_drives }
           describe 'floppy drive 1' do
-            subject { ovf.virtual_systems.first.floppy_drives.first }
+            subject { vm.floppy_drives.first }
             its(['AddressOnParent']) { should == "0" }
             its(['AutomaticAllocation']) { should == "false" }
             its(['Description']) { should == "Floppy Drive" }
@@ -395,7 +398,7 @@ describe 'VmPackage' do
         describe 'CD/DVD drives' do
           it { should have(1).optical_drives }
           describe 'optical drive 1' do
-            subject { ovf.virtual_systems.first.optical_drives.first }
+            subject { vm.optical_drives.first }
             its(['AddressOnParent']) { should == "0" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['ElementName']) { should == "CD/DVD drive 1" }
@@ -408,12 +411,14 @@ describe 'VmPackage' do
 
         describe 'disks' do
           it { should have(2).disks }
-
+          describe 'disk 1' do
+            subject { ovf.virtual_systems }
+          end
         end
         describe 'network cards' do
           it { should have(4).network_cards }
           describe 'network card 1' do
-            subject { ovf.virtual_systems.first.network_cards[0] }
+            subject { vm.network_cards[0] }
             its(['AddressOnParent']) { should == "7" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET01" }
@@ -424,7 +429,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 2' do
-            subject { ovf.virtual_systems.first.network_cards[1] }
+            subject { vm.network_cards[1] }
             its(['AddressOnParent']) { should == "8" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET02" }
@@ -435,7 +440,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 3' do
-            subject { ovf.virtual_systems.first.network_cards[2] }
+            subject { vm.network_cards[2] }
             its(['AddressOnParent']) { should == "9" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET03" }
@@ -446,7 +451,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 4' do
-            subject { ovf.virtual_systems.first.network_cards[3] }
+            subject { vm.network_cards[3] }
             its(['AddressOnParent']) { should == "10" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET04" }
@@ -460,7 +465,8 @@ describe 'VmPackage' do
         end
       end
       describe 'virtual system 2' do
-        subject { ovf.virtual_systems[1] }
+        let(:vm) { ovf.virtual_systems[1] }
+        subject { vm }
         its(:name) { should == "ComplexOVF-VMW-V7" }
         its(:info) { should == "A virtual machine" }
         its(:operating_system) { should == "Microsoft Windows Server 2008 R2 (64-bit)" }
@@ -469,7 +475,7 @@ describe 'VmPackage' do
         describe 'IDE Controller' do
           it { should have(2).ide_controllers }
           describe 'ide controller 0' do
-            subject { ovf.virtual_systems.first.ide_controllers[0] }
+            subject { vm.ide_controllers[0] }
             its(['Address']) { should == "1" }
             its(['Description']) { should == "IDE Controller" }
             its(['ElementName']) { should == "IDE 1" }
@@ -477,7 +483,7 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "5" }
           end
           describe 'ide controller 1' do
-            subject { ovf.virtual_systems.first.ide_controllers[1] }
+            subject { vm.ide_controllers[1] }
             its(['Address']) { should == "0" }
             its(['Description']) { should == "IDE Controller" }
             its(['ElementName']) { should == "IDE 0" }
@@ -489,12 +495,12 @@ describe 'VmPackage' do
         describe 'SCSI Controller' do
           it { should have(1).scsi_controllers }
           describe 'scsi controller 0' do
-            subject { ovf.virtual_systems.first.scsi_controllers.first }
+            subject { vm.scsi_controllers.first }
             its(['Address']) { should == "0" }
             its(['Description']) { should == "SCSI Controller" }
             its(['ElementName']) { should == "SCSI controller 0" }
             its(['InstanceID']) { should == "3" }
-            its(['ResourceSubType']) { should == "VirtualSCSI" }
+            its(['ResourceSubType']) { should == "lsilogicsas" }
             its(['ResourceType']) { should == "6" }
           end
         end
@@ -502,7 +508,7 @@ describe 'VmPackage' do
         describe 'floppy drives' do
           it { should have(1).floppy_drives }
           describe 'floppy drive 1' do
-            subject { ovf.virtual_systems.first.floppy_drives.first }
+            subject { vm.floppy_drives.first }
             its(['AddressOnParent']) { should == "0" }
             its(['AutomaticAllocation']) { should == "false" }
             its(['Description']) { should == "Floppy Drive" }
@@ -515,11 +521,11 @@ describe 'VmPackage' do
         describe 'CD/DVD drives' do
           it { should have(1).optical_drives }
           describe 'optical drive 1' do
-            subject { ovf.virtual_systems.first.optical_drives.first }
+            subject { vm.optical_drives.first }
             its(['AddressOnParent']) { should == "0" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['ElementName']) { should == "CD/DVD drive 1" }
-            its(['HostResource']) { should == "ovf:/file/file2" }
+            its(['HostResource']) { should == "ovf:/file/file5" }
             its(['Parent']) { should == "4" }
             its(['InstanceID']) { should == "7" }
             its(['ResourceType']) { should == "15" }
@@ -533,7 +539,7 @@ describe 'VmPackage' do
         describe 'network cards' do
           it { should have(4).network_cards }
           describe 'network card 1' do
-            subject { ovf.virtual_systems.first.network_cards[0] }
+            subject { vm.network_cards[0] }
             its(['AddressOnParent']) { should == "7" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET01" }
@@ -544,36 +550,36 @@ describe 'VmPackage' do
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 2' do
-            subject { ovf.virtual_systems.first.network_cards[1] }
+            subject { vm.network_cards[1] }
             its(['AddressOnParent']) { should == "8" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET02" }
-            its(['Description']) { should == "E1000 ethernet adapter on \"VINET02\"" }
+            its(['Description']) { should == "VmxNet2 ethernet adapter on \"VINET02\"" }
             its(['ElementName']) { should == "Network adapter 2" }
             its(['InstanceID']) { should == "9" }
-            its(['ResourceSubType']) { should == "E1000" }
+            its(['ResourceSubType']) { should == "VmxNet2" }
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 3' do
-            subject { ovf.virtual_systems.first.network_cards[2] }
+            subject { vm.network_cards[2] }
             its(['AddressOnParent']) { should == "9" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET03" }
-            its(['Description']) { should == "VmxNet3 ethernet adapter on \"VINET03\"" }
+            its(['Description']) { should == "E1000 ethernet adapter on \"VINET03\"" }
             its(['ElementName']) { should == "Network adapter 3" }
             its(['InstanceID']) { should == "10" }
-            its(['ResourceSubType']) { should == "VmxNet3" }
+            its(['ResourceSubType']) { should == "E1000" }
             its(['ResourceType']) { should == "10" }
           end
           describe 'network card 4' do
-            subject { ovf.virtual_systems.first.network_cards[3] }
+            subject { vm.network_cards[3] }
             its(['AddressOnParent']) { should == "10" }
             its(['AutomaticAllocation']) { should == "true" }
             its(['Connection']) { should == "VINET04" }
-            its(['Description']) { should == "E1000 ethernet adapter on \"VINET04\"" }
+            its(['Description']) { should == "VmxNet3 ethernet adapter on \"VINET04\"" }
             its(['ElementName']) { should == "Network adapter 4" }
             its(['InstanceID']) { should == "11" }
-            its(['ResourceSubType']) { should == "E1000" }
+            its(['ResourceSubType']) { should == "VmxNet3" }
             its(['ResourceType']) { should == "10" }
           end
 

@@ -72,13 +72,13 @@ describe 'VmPackage' do
       describe 'vmdisk1' do
         subject { ovf.disks.first }
         its(['name']) { should == "vmdisk1" }
-        its(['location']) { should == "" }
+        its(['location']) { should == "ComplexOVF-VMW-V8-disk1.vmdk" }
         its(['size']) { should == "17179869184" }
       end
       describe 'vmdisk1' do
         subject { ovf.disks[1] }
         its(['name']) { should == "vmdisk2" }
-        its(['location']) { should == "" }
+        its(['location']) { should == "ComplexOVF-VMW-V8-disk2.vmdk" }
         its(['size']) { should == "21474836480" }
       end
     end

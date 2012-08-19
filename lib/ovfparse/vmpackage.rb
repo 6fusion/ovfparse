@@ -241,10 +241,9 @@ class VmPackage
   def getVmDisks
     disks     = []
     filenames = { }
-    getChildrenByName(references, 'File').each do |node|
+    files.each do |node|
       filenames[node['id']] = node['href']
     end
-
     getChildrenByName(diskSection, 'Disk').each do |node|
       capacity        = node['capacity']
       units           = node['capacityAllocationUnits']

@@ -27,8 +27,28 @@ describe 'VmPackage' do
         its(:operating_system) { should == "Linux 2.6.x" }
         its(:cpus) { should == 1 }
         its(:memory) { should == 256 }
-        it { should have(1).disks }
-        it { should have(1).network_cards }
+        describe 'disks' do
+          it { should have(1).disks }
+          describe 'disk 1' do
+            subject { vm.disks[0] }
+            its(['ElementName']) { should == "Hard disk " }
+            its(['HostResource']) { should == "ovf://disk/lamp" }
+            its(['InstanceID']) { should == "5" }
+            its(['Parent']) { should == "4" }
+            its(['ResourceType']) { should == "17" }
+          end
+        end
+        describe 'network cards' do
+          it { should have(1).network_cards }
+          describe 'network card 1' do
+            subject { vm.network_cards[0] }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "VM Network" }
+            its(['ElementName']) { should == "VM network" }
+            its(['InstanceID']) { should == "3" }
+            its(['ResourceType']) { should == "10" }
+          end
+        end
       end
     end
 
@@ -412,9 +432,25 @@ describe 'VmPackage' do
         describe 'disks' do
           it { should have(2).disks }
           describe 'disk 1' do
-            subject { ovf.virtual_systems }
+            subject { vm.disks[0] }
+            its(['AddressOnParent']) { should == "0" }
+            its(['ElementName']) { should == "Hard disk 1" }
+            its(['HostResource']) { should == "ovf:/disk/vmdisk1" }
+            its(['InstanceID']) { should == "6" }
+            its(['Parent']) { should == "3" }
+            its(['ResourceType']) { should == "17" }
+          end
+          describe 'disk 2' do
+            subject { vm.disks[1] }
+            its(['AddressOnParent']) { should == "1" }
+            its(['ElementName']) { should == "Hard disk 2" }
+            its(['HostResource']) { should == "ovf:/disk/vmdisk2" }
+            its(['InstanceID']) { should == "13" }
+            its(['Parent']) { should == "3" }
+            its(['ResourceType']) { should == "17" }
           end
         end
+
         describe 'network cards' do
           it { should have(4).network_cards }
           describe 'network card 1' do
@@ -534,7 +570,24 @@ describe 'VmPackage' do
 
         describe 'disks' do
           it { should have(2).disks }
-
+          describe 'disk 1' do
+            subject { vm.disks[0] }
+            its(['AddressOnParent']) { should == "0" }
+            its(['ElementName']) { should == "Hard disk 1" }
+            its(['HostResource']) { should == "ovf:/disk/vmdisk3" }
+            its(['InstanceID']) { should == "6" }
+            its(['Parent']) { should == "3" }
+            its(['ResourceType']) { should == "17" }
+          end
+          describe 'disk 2' do
+            subject { vm.disks[1] }
+            its(['AddressOnParent']) { should == "1" }
+            its(['ElementName']) { should == "Hard disk 2" }
+            its(['HostResource']) { should == "ovf:/disk/vmdisk4" }
+            its(['InstanceID']) { should == "13" }
+            its(['Parent']) { should == "3" }
+            its(['ResourceType']) { should == "17" }
+          end
         end
         describe 'network cards' do
           it { should have(4).network_cards }

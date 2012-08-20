@@ -72,29 +72,25 @@ class VmPackage
   # @param [Object] uri
   def self.create(uri)
     @protocol, @url = uri.scan(/\A(\w+):\/\/(.+)\Z/).flatten unless !uri
-    if @protocol=='ftp'
-      FtpVmPackage.new(uri)
-    elsif @protocol=='http'
-      HttpVmPackage.new(uri)
-    elsif @protocol=='https'
-      HttpsVmPackage.new(uri)
-    elsif @protocol=='file'
-      FileVmPackage.new(uri)
-    elsif @protocol.match(/esx/)
-      if @protocol.match(/esx4/)
+    case @protocol
+      when 'ftp'
+        FtpVmPackage.new(uri)
+      when 'http'
+        HttpVmPackage.new(uri)
+      when 'https'
+        HttpsVmPackage.new(uri)
+      when 'file'
+        FileVmPackage.new(uri)
+      when /esx4/
         Esx4VmPackage.new(uri)
-      else
-        raise NotImplementedError, "Cannot handle this version of ESX: " + @protocol + "\n"
-      end
-    elsif @protocol.match(/vc/)
-      if @protocol.match(/vc4/)
+      when /esx/
+        raise NotImplementedError, "Cannot handle this version of ESX: #{@protocol}"
+      when /vc4/
         Vc4VmPackage.new(uri)
+      when /vc/
+        raise NotImplementedError, "Cannot handle this version of VirtualCenter: #{@protocol}"
       else
-        raise NotImplementedError, "Cannot handle this version of VirtualCenter: " + @protocol + "\n"
-      end
-    else
-      raise NotImplementedError, "Unknown Protocol: " + @protocol + " (bad URI string?)\n"
-      VmRepository.new(uri)
+        raise NotImplementedError, "Unknown Protocol: #{@protocol} (bad URI string?)"
     end
   end
 

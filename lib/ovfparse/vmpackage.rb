@@ -55,7 +55,6 @@ class VmPackage
                 :virtualSystem
 
   def to_s
-#    (@name + " from " + @url + "\n")
     self.uri
   end
 
@@ -66,19 +65,13 @@ class VmPackage
   def initialize(uri)
     uri = uri.to_s if uri.kind_of?(URI::HTTP)
 
-    (@protocol, @url) = uri.split(":", 2) unless !uri
-    @url.sub!(/^\/{0,2}/, '')
-    @protocol.downcase
-    @url.downcase
+    @protocol, @url = uri.scan(/\A(\w+):\/\/(.+)\Z/).flatten unless !uri
     @name = uri.split('/').last
   end
 
   # @param [Object] uri
   def self.create(uri)
-    (@protocol, @url) = uri.split(":", 2) unless !uri
-    @url.sub!(/^\/{0,2}/, '')
-    @protocol.downcase
-    @url.downcase
+    @protocol, @url = uri.scan(/\A(\w+):\/\/(.+)\Z/).flatten unless !uri
     if @protocol=='ftp'
       FtpVmPackage.new(uri)
     elsif @protocol=='http'

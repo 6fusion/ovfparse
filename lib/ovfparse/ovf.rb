@@ -11,9 +11,9 @@ module Ovfparse
     # @param [String] xml
     # @return [VmPackage]
     def self.from_xml(xml)
-      ovf = VmPackage.new
+      ovf     = VmPackage.new
       ovf.xml = Nokogiri::XML(xml) do |config|
-            config.noblanks.strict.noent
+        config.noblanks.strict.noent
       end
       ovf.fetch
     end

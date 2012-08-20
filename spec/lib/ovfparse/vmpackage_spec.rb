@@ -15,6 +15,23 @@ describe 'VmPackage' do
 
     describe 'files' do
       it { should have(1).files }
+      describe 'file 1' do
+        subject { ovf.files[0] }
+        its(['id']) { should == "lamp" }
+        its(['href']) { should == "lamp.vmdk" }
+        its(['size']) { should == "180114671" }
+      end
+    end
+
+    describe 'disks' do
+      it { should have(1).disks }
+      describe 'disk 1' do
+        subject { ovf.disks[0] }
+        its(['name']) { should == "lamp" }
+        its(['size']) { should == "4294967296" }
+        its(['location']) { should == "lamp.vmdk" }
+        its(['format']) { should == "vmdk" }
+      end
     end
 
     describe 'virtual_systems' do
@@ -95,12 +112,14 @@ describe 'VmPackage' do
         its(['name']) { should == "vmdisk1" }
         its(['location']) { should == "ComplexOVF-VMW-V8-disk1.vmdk" }
         its(['size']) { should == "17179869184" }
+        its(['format']) { should == "vmdk" }
       end
       describe 'vmdisk1' do
         subject { ovf.disks[1] }
         its(['name']) { should == "vmdisk2" }
         its(['location']) { should == "ComplexOVF-VMW-V8-disk2.vmdk" }
         its(['size']) { should == "21474836480" }
+        its(['format']) { should == "vmdk" }
       end
     end
 
@@ -318,24 +337,28 @@ describe 'VmPackage' do
         its(['name']) { should == "vmdisk1" }
         its(['location']) { should == "ComplexVAPP-disk1.vmdk" }
         its(['size']) { should == "17179869184" }
+        its(['format']) { should == "vmdk" }
       end
       describe 'vmdisk2' do
         subject { ovf.disks[1] }
         its(['name']) { should == "vmdisk2" }
         its(['location']) { should == "ComplexVAPP-disk2.vmdk" }
         its(['size']) { should == "21474836480" }
+        its(['format']) { should == "vmdk" }
       end
       describe 'vmdisk3' do
         subject { ovf.disks[2] }
         its(['name']) { should == "vmdisk3" }
         its(['location']) { should == "ComplexVAPP-disk3.vmdk" }
         its(['size']) { should == "42949672960" }
+        its(['format']) { should == "vmdk" }
       end
       describe 'vmdisk4' do
         subject { ovf.disks[3] }
         its(['name']) { should == "vmdisk4" }
         its(['location']) { should == "ComplexVAPP-disk4.vmdk" }
         its(['size']) { should == "10737418240" }
+        its(['format']) { should == "vmdk" }
       end
     end
 

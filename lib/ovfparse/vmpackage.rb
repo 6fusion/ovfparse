@@ -66,7 +66,7 @@ class VmPackage
     if uri
       uri = uri.to_s if uri.kind_of?(URI::HTTP)
       @protocol, @url = uri.scan(/\A(\w+):\/\/(.+)\Z/).flatten
-      @name = uri.split('/').last
+      @name           = uri.split('/').last
     end
   end
 
@@ -240,12 +240,16 @@ class VmPackage
       end
       capacity        = (capacity.to_i * unit_multiplier).to_s
       thin_size       = node['populatedSize']
+      # NOTE: some ovfs may not have a fileRef pointing to the disk file, even though the standard
+      # says that they get blank disks in this case.  Sometimes where is a File with the same id as
+      # the Disk.  If there is, use it.
       disks << {
-        'name'      => node['diskId'],
-        'location'  => filenames[node['fileRef']],
-        'size'      => capacity,
-        'format'    => node['format'],
-        'thin_size' => (thin_size || "-1")
+        'name'       => node['diskId'],
+        'location'   => filenames[node['fileRef'] || node['diskId']].to_s,
+        'size'       => capacity,
+        'format_url' => node['format'],
+        'format'     => File.extname(filenames[node['fileRef'] || node['diskId']].to_s)[1..-1],
+        'thin_size'  => (thin_size || "-1")
       }
     end
     disks
@@ -268,7 +272,7 @@ class VmPackage
   def getVmReferences
     refs = []
     (self.xml/"References/File").each do |file|
-      refs << Hash[*file.attributes.map {|k,v| [k, v.to_s]}.flatten]
+      refs << Hash[*file.attributes.map { |k, v| [k, v.to_s] }.flatten]
     end
     refs
   end
@@ -276,7 +280,7 @@ class VmPackage
   alias :files :getVmReferences
 
   def annotations
-    (self.xml/"Annotation").map {|annotation| annotation.text }
+    (self.xml/"Annotation").map { |annotation| annotation.text }
   end
 
   def getVmCPUs

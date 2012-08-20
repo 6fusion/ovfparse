@@ -2,22 +2,10 @@ require 'nokogiri'
 require 'open-uri'
 
 class VmPackage
-  @url
-  @base_path
-  @name
-  @protocol
-  @size
-  @xml
-
 
   OVA = 0
   OVF = 1
   ISO = 2
-
-  @references
-  @diskSection
-  @networkSection
-  @virtualSystem
 
   @type = nil
 

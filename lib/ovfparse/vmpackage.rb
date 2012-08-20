@@ -62,11 +62,12 @@ class VmPackage
     protocol ? "#{protocol}://#{url}" : url
   end
 
-  def initialize(uri)
-    uri = uri.to_s if uri.kind_of?(URI::HTTP)
-
-    @protocol, @url = uri.scan(/\A(\w+):\/\/(.+)\Z/).flatten unless !uri
-    @name = uri.split('/').last
+  def initialize(uri = nil)
+    if uri
+      uri = uri.to_s if uri.kind_of?(URI::HTTP)
+      @protocol, @url = uri.scan(/\A(\w+):\/\/(.+)\Z/).flatten
+      @name = uri.split('/').last
+    end
   end
 
   # @param [Object] uri
@@ -97,6 +98,7 @@ class VmPackage
   # read in and parse the OVF, should return the VmPackage object itself
   # @return [VmPackage]
   def fetch
+    loadElementRefs
     self
   end
 
@@ -708,12 +710,12 @@ class HttpVmPackage < VmPackage
       config.noblanks.strict.noent
     end
 
-    loadElementRefs
-    self
+    super
   end
 end
 
 class HttpsVmPackage < VmPackage
+  # TODO: writes ovf to a temporary file and then deletes it.  Possible permissions problems here
   def fetch
     url          = URI.parse(URI.escape(self.uri))
     http         = Net::HTTP.new(url.host, url.port)
@@ -731,14 +733,14 @@ class HttpsVmPackage < VmPackage
     end
 
     File.unlink(@name)
-    loadElementRefs
-    self
+    super
   end
 
 
 end
 
 class FtpVmPackage < VmPackage
+  # TODO: hard coded FTP server credentials here
   def fetch
     url         = URI.parse(URI.escape(self.uri))
     ftp         = Net::FTP.new(url.host, "anonymous", "cops-bot@mitre.org")
@@ -752,7 +754,7 @@ class FtpVmPackage < VmPackage
     end
 
     File.unlink(@name)
-    loadElementRefs
+    super
   end
 end
 
@@ -761,8 +763,7 @@ class FileVmPackage < VmPackage
     @xml = Nokogiri::XML(File.open(self.url)) do |config|
       config.noblanks.strict.noent
     end
-    loadElementRefs
-    self
+    super
   end
 end
 

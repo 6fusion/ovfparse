@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ovf:Envelope xmlns:ovf="http://schemas.dmtf.org/ovf/envelope/1" xmlns:xenovf="http://schemas.citrix.com/ovf/envelope/1" xmlns:rasd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cim="http://schemas.dmtf.org/wbem/wscim/1/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vssd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xml:lang="en-US" xenovf:Name="demo2-fw-Xen" xenovf:id="7f0c8260-fac5-4450-a663-c0f0cc09553e" xenovf:version="1.0.0">
+   <ovf:References>
+      <ovf:File ovf:id="d7a869a5-2ac9-4839-9210-e645d9cf1924" ovf:href="0163f260-330b-43d1-adbd-bbcb038fdab2.vhd" ovf:size="207229581" ovf:compression="GZip" />
+   </ovf:References>
+   <ovf:DiskSection>
+      <ovf:Info>Available Disks</ovf:Info>
+      <ovf:Disk xenovf:isBootable="true" ovf:diskId="d7a869a5-2ac9-4839-9210-e645d9cf1924" ovf:fileRef="d7a869a5-2ac9-4839-9210-e645d9cf1924" ovf:capacity="21474836480" ovf:format="http://www.microsoft.com/technet/virtualserver/downloads/vhdspec.mspx" />
+   </ovf:DiskSection>
+   <ovf:NetworkSection>
+      <ovf:Info>Available Networks</ovf:Info>
+      <ovf:Network ovf:name="253c72df-fdc5-7a43-fb7f-3d69370f3539">
+         <ovf:Description>Network Adapter</ovf:Description>
+      </ovf:Network>
+   </ovf:NetworkSection>
+   <ovf:StartupSection>
+      <ovf:Info>Startup Options</ovf:Info>
+      <ovf:Item ovf:id="ef71d3f0-173b-4a44-8fac-fe55ab2d350d" ovf:order="0" />
+   </ovf:StartupSection>
+   <ovf:VirtualSystem ovf:id="ef71d3f0-173b-4a44-8fac-fe55ab2d350d">
+      <ovf:Info>XenOVF Generated</ovf:Info>
+      <ovf:Name>demo2-fw</ovf:Name>
+      <ovf:OperatingSystemSection ovf:id="0">
+         <ovf:Info>Guest Operating System</ovf:Info>
+         <ovf:Description>XenOVF Created Export</ovf:Description>
+      </ovf:OperatingSystemSection>
+      <ovf:VirtualHardwareSection xenovf:Id="fab859aa-f6b6-41d8-82cb-4bfa40897a17">
+         <ovf:Info>Virtual Hardware Requirements: 1024 MB RAM; 1 CPU(s), 1 Disk(s), 2 Network(s)</ovf:Info>
+         <ovf:System>
+            <vssd:Caption>Xen Virtual Machine</vssd:Caption>
+            <vssd:Description>Imported from an OVF/OVA package.</vssd:Description>
+            <vssd:ElementName>demo2-fw</vssd:ElementName>
+            <vssd:InstanceID>62c78a0f-7190-4729-9ba9-4bede560ee99</vssd:InstanceID>
+            <vssd:VirtualSystemIdentifier>737e2e8c-50ca-4afa-ab67-9623c759dd7f</vssd:VirtualSystemIdentifier>
+            <vssd:VirtualSystemType>hvm-3.0-unknown</vssd:VirtualSystemType>
+         </ovf:System>
+         <ovf:Item>
+            <rasd:AddressOnParent>0</rasd:AddressOnParent>
+            <rasd:AllocationUnits>Disk</rasd:AllocationUnits>
+            <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+            <rasd:Caption>Hard Disk Image</rasd:Caption>
+            <rasd:Connection>d7a869a5-2ac9-4839-9210-e645d9cf1924,device=0</rasd:Connection>
+            <rasd:ConsumerVisibility>3</rasd:ConsumerVisibility>
+            <rasd:Description />
+            <rasd:ElementName>Hard Disk 1</rasd:ElementName>
+            <rasd:HostResource>ovf:/disk/d7a869a5-2ac9-4839-9210-e645d9cf1924</rasd:HostResource>
+            <rasd:InstanceID>d7a869a5-2ac9-4839-9210-e645d9cf1924</rasd:InstanceID>
+            <rasd:Limit>1</rasd:Limit>
+            <rasd:MappingBehavior>0</rasd:MappingBehavior>
+            <rasd:ResourceSubType>Virtual Hard Disk Image</rasd:ResourceSubType>
+            <rasd:ResourceType>19</rasd:ResourceType>
+            <rasd:VirtualQuantity>1</rasd:VirtualQuantity>
+            <rasd:Weight>100</rasd:Weight>
+         </ovf:Item>
+         <ovf:Item ovf:required="false">
+            <rasd:AddressOnParent>2</rasd:AddressOnParent>
+            <rasd:AllocationUnits>DVD Drives</rasd:AllocationUnits>
+            <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+            <rasd:Caption>CD/DVD Drive</rasd:Caption>
+            <rasd:Connection>device=2</rasd:Connection>
+            <rasd:ConsumerVisibility>3</rasd:ConsumerVisibility>
+            <rasd:Description>Xen CD/DVD Drive Setting Data.</rasd:Description>
+            <rasd:ElementName>CD/DVD Drive</rasd:ElementName>
+            <rasd:InstanceID>c4173b3a-eb46-56b1-5883-3ec7c4043866</rasd:InstanceID>
+            <rasd:Limit>1</rasd:Limit>
+            <rasd:MappingBehavior>0</rasd:MappingBehavior>
+            <rasd:ResourceType>16</rasd:ResourceType>
+            <rasd:VirtualQuantity>1</rasd:VirtualQuantity>
+            <rasd:Weight>0</rasd:Weight>
+         </ovf:Item>
+         <ovf:Item>
+            <rasd:Address>e2:fe:4a:a2:14:62</rasd:Address>
+            <rasd:AllocationUnits>Ports</rasd:AllocationUnits>
+            <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+            <rasd:Caption>Network Adapter</rasd:Caption>
+            <rasd:Connection>253c72df-fdc5-7a43-fb7f-3d69370f3539</rasd:Connection>
+            <rasd:ConsumerVisibility>3</rasd:ConsumerVisibility>
+            <rasd:Description>Network Adapter</rasd:Description>
+            <rasd:ElementName>VINET01</rasd:ElementName>
+            <rasd:InstanceID>0c652713-b098-45f1-9b86-538fa9eeb9a4</rasd:InstanceID>
+            <rasd:Limit>1</rasd:Limit>
+            <rasd:MappingBehavior>0</rasd:MappingBehavior>
+            <rasd:ResourceType>10</rasd:ResourceType>
+            <rasd:VirtualQuantity>1</rasd:VirtualQuantity>
+            <rasd:Weight>0</rasd:Weight>
+         </ovf:Item>
+         <ovf:Item>
+            <rasd:Address>c2:2b:7a:82:ed:f5</rasd:Address>
+            <rasd:AllocationUnits>Ports</rasd:AllocationUnits>
+            <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+            <rasd:Caption>Network Adapter</rasd:Caption>
+            <rasd:Connection>253c72df-fdc5-7a43-fb7f-3d69370f3539</rasd:Connection>
+            <rasd:ConsumerVisibility>3</rasd:ConsumerVisibility>
+            <rasd:Description>Network Adapter</rasd:Description>
+            <rasd:ElementName>VINET01</rasd:ElementName>
+            <rasd:InstanceID>5e072139-c72d-450e-87ae-5e029b8d8437</rasd:InstanceID>
+            <rasd:Limit>1</rasd:Limit>
+            <rasd:MappingBehavior>0</rasd:MappingBehavior>
+            <rasd:ResourceType>10</rasd:ResourceType>
+            <rasd:VirtualQuantity>1</rasd:VirtualQuantity>
+            <rasd:Weight>0</rasd:Weight>
+         </ovf:Item>
+         <ovf:Item>
+            <rasd:AllocationUnits>Processor Cores</rasd:AllocationUnits>
+            <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+            <rasd:Caption>Processor</rasd:Caption>
+            <rasd:ConsumerVisibility>0</rasd:ConsumerVisibility>
+            <rasd:Description>Processor</rasd:Description>
+            <rasd:ElementName>Processor</rasd:ElementName>
+            <rasd:InstanceID>4b81ae77-dd8d-4627-8fff-76035d387803</rasd:InstanceID>
+            <rasd:Limit>100000</rasd:Limit>
+            <rasd:MappingBehavior>0</rasd:MappingBehavior>
+            <rasd:ResourceType>3</rasd:ResourceType>
+            <rasd:VirtualQuantity>1</rasd:VirtualQuantity>
+            <rasd:Weight>100</rasd:Weight>
+         </ovf:Item>
+         <ovf:Item>
+            <rasd:AllocationUnits>byte * 2^20</rasd:AllocationUnits>
+            <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+            <rasd:Caption>Memory</rasd:Caption>
+            <rasd:ConsumerVisibility>2</rasd:ConsumerVisibility>
+            <rasd:Description>Memory Setting Data</rasd:Description>
+            <rasd:ElementName>Memory</rasd:ElementName>
+            <rasd:InstanceID>85483c5d-9209-48f3-a9c3-32dad52ff1b9</rasd:InstanceID>
+            <rasd:Limit>128</rasd:Limit>
+            <rasd:MappingBehavior>0</rasd:MappingBehavior>
+            <rasd:ResourceSubType>Machine Memory</rasd:ResourceSubType>
+            <rasd:ResourceType>4</rasd:ResourceType>
+            <rasd:VirtualQuantity>1024</rasd:VirtualQuantity>
+            <rasd:Weight>0</rasd:Weight>
+         </ovf:Item>
+         <xenovf:VirtualSystemOtherConfigurationData id="2c538bb4-a1ee-4878-97e9-9df7aea4ad5f" Name="HVM_boot_params">
+            <xenovf:Info>XenServer Specific Information</xenovf:Info>
+            <xenovf:Value>dc</xenovf:Value>
+         </xenovf:VirtualSystemOtherConfigurationData>
+         <xenovf:VirtualSystemOtherConfigurationData id="e8f7ff14-a009-46c2-b5fe-c39d180e8007" Name="HVM_boot_policy">
+            <xenovf:Info>Boot Order: CD/DVD - Network - Disk</xenovf:Info>
+            <xenovf:Value>BIOS order</xenovf:Value>
+         </xenovf:VirtualSystemOtherConfigurationData>
+         <xenovf:VirtualSystemOtherConfigurationData id="1891a153-aac3-4485-93a7-6e4b6ba3cbe4" Name="platform">
+            <xenovf:Info>XenServer Platform Information</xenovf:Info>
+            <xenovf:Value>apic=true;stdvga=0;acpi=true;pae=true;</xenovf:Value>
+         </xenovf:VirtualSystemOtherConfigurationData>
+      </ovf:VirtualHardwareSection>
+   </ovf:VirtualSystem>
+</ovf:Envelope>

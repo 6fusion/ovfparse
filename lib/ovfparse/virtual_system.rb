@@ -11,6 +11,7 @@ class VirtualSystem
     :cd_drives        => 15,
     :dvd_drives       => 16,
     :disks            => 17,
+    :storage_extents  => 19,
     :usb              => 23
   }
 
@@ -28,12 +29,15 @@ class VirtualSystem
     end
   end
 
+  # Get the name of the virtual system
+  # many ovfs use the 'id' of the virtual system to hold the name of the machine
+  # Xen, on the other hand, adds a 'Name' element
   def name
-    @name ||= self.xml['id']
+    @name ||= (self.xml.at('Name').text rescue self.xml['id'])
   end
 
   def info
-    @info ||= (self.xml.at('Info')).text
+    @info ||= ((self.xml.at('Info')).text) rescue ""
   end
 
   def optical_drives
@@ -54,6 +58,14 @@ class VirtualSystem
 
   def product_sections
 
+  end
+
+  def other_configurations
+    configs = {}
+    (self.xml/'VirtualSystemOtherConfigurationData').map do |node|
+        configs[node['Name']] = node.at('Value').text
+    end
+    configs
   end
 
   protected

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'VmPackage' do
-  context 'someOVF.ovf' do
+  describe 'someOVF.ovf' do
     let(:ovf) { VmPackage.create('file://spec/fixtures/someOVF.ovf').fetch }
     subject { ovf }
     it { should be_a_kind_of(FileVmPackage) }
@@ -71,7 +71,7 @@ describe 'VmPackage' do
 
   end
 
-  context 'ComplexOVF-VMW-V8.ovf' do
+  describe 'ComplexOVF-VMW-V8.ovf' do
     let(:ovf) { VmPackage.create('file://spec/fixtures/complexOVF-VMW-V8.ovf').fetch }
     subject { ovf }
     it { should be_a_kind_of(FileVmPackage) }
@@ -660,8 +660,11 @@ describe 'VmPackage' do
           end
 
         end
+
+        it { should have(0).other_configurations }
       end
     end
+
 
     describe 'annotations' do
       it { should have(1).annotations }
@@ -672,4 +675,90 @@ describe 'VmPackage' do
     end
   end
 
+  describe 'xen-vyatta.ovf' do
+    let(:ovf) { VmPackage.create('file://spec/fixtures/xen-vyatta.ovf').fetch }
+    subject { ovf }
+    it { should be_a_kind_of(FileVmPackage) }
+    its(:url) { should eql('spec/fixtures/xen-vyatta.ovf') }
+    its(:uri) { should eql('file://spec/fixtures/xen-vyatta.ovf') }
+    its(:base_path) { should be_nil }
+    its(:name) { should eql('xen-vyatta.ovf') }
+    its(:version) { should == "1.0.0" }
+    its(:protocol) { should == "file" }
+
+    describe 'files' do
+      it { should have(1).files }
+      describe 'file 1' do
+        subject { ovf.files[0] }
+        its(['id']) { should == "d7a869a5-2ac9-4839-9210-e645d9cf1924" }
+        its(['href']) { should == "0163f260-330b-43d1-adbd-bbcb038fdab2.vhd" }
+        its(['size']) { should == "207229581" }
+      end
+    end
+
+    describe 'disks' do
+      it { should have(1).disks }
+      describe 'disk 1' do
+        subject { ovf.disks[0] }
+        its(['name']) { should == "d7a869a5-2ac9-4839-9210-e645d9cf1924" }
+        its(['size']) { should == "21474836480" }
+        its(['location']) { should == "0163f260-330b-43d1-adbd-bbcb038fdab2.vhd" }
+        its(['format']) { should == "vhd" }
+      end
+    end
+
+    describe 'virtual_systems' do
+      it { should have(1).virtual_systems }
+      describe 'first virtual systems' do
+        let(:vm) { ovf.virtual_systems.first }
+        subject { vm }
+        its(:name) { should == "demo2-fw" }
+        its(:info) { should == "XenOVF Generated" }
+        its(:operating_system) { should == "XenOVF Created Export" }
+        its(:cpus) { should == 1 }
+        its(:memory) { should == 1024 }
+        describe 'storage extents' do
+          it { should have(1).storage_extents }
+          describe 'extent 1' do
+            subject { vm.storage_extents[0] }
+            its(['ElementName']) { should == "Hard Disk 1" }
+            its(['Connection']) { should == 'd7a869a5-2ac9-4839-9210-e645d9cf1924,device=0' }
+            its(['HostResource']) { should == "ovf:/disk/d7a869a5-2ac9-4839-9210-e645d9cf1924" }
+            its(['InstanceID']) { should == "d7a869a5-2ac9-4839-9210-e645d9cf1924" }
+            its(['ResourceSubType']) { should == 'Virtual Hard Disk Image' }
+            its(['ResourceType']) { should == "19" }
+          end
+        end
+        describe 'network cards' do
+          it { should have(2).network_cards }
+          describe 'network card 1' do
+            subject { vm.network_cards[0] }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "253c72df-fdc5-7a43-fb7f-3d69370f3539" }
+            its(['ElementName']) { should == "VINET01" }
+            its(['InstanceID']) { should == "0c652713-b098-45f1-9b86-538fa9eeb9a4" }
+            its(['ResourceType']) { should == "10" }
+          end
+          describe 'network card 2' do
+            subject { vm.network_cards[1] }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "253c72df-fdc5-7a43-fb7f-3d69370f3539" }
+            its(['ElementName']) { should == "VINET01" }
+            its(['InstanceID']) { should == "5e072139-c72d-450e-87ae-5e029b8d8437" }
+            its(['ResourceType']) { should == "10" }
+          end
+        end
+
+        describe 'other configurations' do
+          it { should have(3).other_configurations }
+          describe 'configurations' do
+            subject { vm.other_configurations }
+            its(['HVM_boot_params']) { should == "dc" }
+            its(['HVM_boot_policy']) { should == "BIOS order"}
+            its(['platform']) { should == "apic=true;stdvga=0;acpi=true;pae=true;"}
+          end
+        end
+      end
+    end
+  end
 end

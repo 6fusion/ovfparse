@@ -764,7 +764,7 @@ end
 
 class FileVmPackage < VmPackage
   def fetch
-    @xml = Nokogiri::XML(File.open(self.url)) do |config|
+    @xml = Nokogiri::XML(File.open(self.url),nil,'utf-8') do |config|
       config.noblanks.strict.noent
     end
     super

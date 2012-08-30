@@ -754,8 +754,95 @@ describe 'VmPackage' do
           describe 'configurations' do
             subject { vm.other_configurations }
             its(['HVM_boot_params']) { should == "dc" }
-            its(['HVM_boot_policy']) { should == "BIOS order"}
-            its(['platform']) { should == "apic=true;stdvga=0;acpi=true;pae=true;"}
+            its(['HVM_boot_policy']) { should == "BIOS order" }
+            its(['platform']) { should == "apic=true;stdvga=0;acpi=true;pae=true;" }
+          end
+        end
+      end
+    end
+  end
+
+  describe 'stress-utf8.ovf' do
+    let(:ovf) { VmPackage.create('file://spec/fixtures/stress-utf8.ovf').fetch }
+    subject { ovf }
+    it { should be_a_kind_of(FileVmPackage) }
+    its(:url) { should eql('spec/fixtures/stress-utf8.ovf') }
+    its(:uri) { should eql('file://spec/fixtures/stress-utf8.ovf') }
+    its(:base_path) { should be_nil }
+    its(:name) { should eql('stress-utf8.ovf') }
+    its(:version) { should == "1.0.0" }
+    its(:protocol) { should == "file" }
+
+    describe 'files' do
+      it { should have(1).files }
+      describe 'file 1' do
+        subject { ovf.files[0] }
+        its(['id']) { should == "d800ee77-7353-47f9-9699-5155470c34b3" }
+        its(['href']) { should == "b019b48a-3779-4fbf-acb2-8bb9a5858eea.vhd" }
+        its(['size']) { should == "3905239655" }
+      end
+    end
+
+    describe 'disks' do
+      it { should have(1).disks }
+      describe 'disk 1' do
+        subject { ovf.disks[0] }
+        its(['name']) { should == "d800ee77-7353-47f9-9699-5155470c34b3" }
+        its(['size']) { should == "8589934592" }
+        its(['location']) { should == "b019b48a-3779-4fbf-acb2-8bb9a5858eea.vhd" }
+        its(['format']) { should == "vhd" }
+      end
+    end
+
+    describe 'virtual_systems' do
+      it { should have(1).virtual_systems }
+      describe 'first virtual systems' do
+        let(:vm) { ovf.virtual_systems.first }
+        subject { vm }
+        its(:name) { should == "stress" }
+        its(:info) { should == "XenOVF Generated" }
+        its(:operating_system) { should == "CentOS release 6.2 (Final)" }
+        its(:cpus) { should == 1 }
+        its(:memory) { should == 1024 }
+        describe 'storage extents' do
+          it { should have(1).storage_extents }
+          describe 'extent 1' do
+            subject { vm.storage_extents[0] }
+            its(['ElementName']) { should == "centos-6_2-minimal-chef 0" }
+            its(['Connection']) { should == 'd800ee77-7353-47f9-9699-5155470c34b3,device=0' }
+            its(['HostResource']) { should == "ovf:/disk/d800ee77-7353-47f9-9699-5155470c34b3" }
+            its(['InstanceID']) { should == "d800ee77-7353-47f9-9699-5155470c34b3" }
+            its(['ResourceSubType']) { should == 'Virtual Hard Disk Image' }
+            its(['ResourceType']) { should == "19" }
+          end
+        end
+        describe 'network cards' do
+          it { should have(2).network_cards }
+          describe 'network card 1' do
+            subject { vm.network_cards[0] }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "cde46fea-5e39-71ac-4f5d-155429a1c049" }
+            its(['ElementName']) { should == "Pool-wide network associated with eth0" }
+            its(['InstanceID']) { should == "eae8c695-0f80-4ff6-b4e4-5f5cd480b3bc" }
+            its(['ResourceType']) { should == "10" }
+          end
+          describe 'network card 2' do
+            subject { vm.network_cards[1] }
+            its(['AutomaticAllocation']) { should == "true" }
+            its(['Connection']) { should == "8f74bf33-13d7-2203-1b25-07e83bd15336" }
+            its(['ElementName']) { should == "Pool-wide network associated with eth1" }
+            its(['InstanceID']) { should == "6685f92c-6a79-4c1a-a88b-2fbfd6b34455" }
+            its(['ResourceType']) { should == "10" }
+          end
+        end
+
+        describe 'other configurations' do
+          it { should have(3).other_configurations }
+          describe 'configurations' do
+            subject { vm.other_configurations }
+            its(['PV_args']) { should == "graphical utf8" }
+            its(['PV_bootloader']) { should == "pygrub" }
+            its(['platform']) { should == "nx=false;viridian=true;acpi=true;pae=true;apic=true;" }
           end
         end
       end

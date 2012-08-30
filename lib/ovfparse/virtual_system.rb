@@ -36,6 +36,10 @@ class VirtualSystem
     @name ||= (self.xml.at('Name').text rescue self.xml['id'])
   end
 
+  def description
+    @description ||= ((self.xml.at('System/Description')).text) rescue ""
+  end
+
   def info
     @info ||= ((self.xml.at('Info')).text) rescue ""
   end

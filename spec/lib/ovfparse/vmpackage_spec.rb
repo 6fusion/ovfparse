@@ -41,6 +41,7 @@ describe 'VmPackage' do
         subject { vm }
         its(:name) { should == "MyLampService" }
         its(:info) { should == "Single-VM Virtual appliance with LAMP stack" }
+        its(:description) { should == ""}
         its(:operating_system) { should == "Linux 2.6.x" }
         its(:cpus) { should == 1 }
         its(:memory) { should == 256 }
@@ -150,6 +151,7 @@ describe 'VmPackage' do
         subject { vm }
         its(:name) { should == "ComplexOVF-VMW-V8" }
         its(:info) { should == "A virtual machine" }
+        its(:description) { should == ""}
         its(:operating_system) { should == "Red Hat Enterprise Linux 6 (64-bit)" }
         its(:cpus) { should == 8 }
         its(:memory) { should == 10240 }
@@ -388,6 +390,7 @@ describe 'VmPackage' do
         let(:vm) { ovf.virtual_systems[0] }
         subject { vm }
         its(:name) { should == "ComplexOVF-VMW-V8" }
+        its(:description) { should == ""}
         its(:info) { should == "A virtual machine" }
         its(:operating_system) { should == "Red Hat Enterprise Linux 6 (64-bit)" }
         its(:cpus) { should == 8 }
@@ -714,6 +717,7 @@ describe 'VmPackage' do
         subject { vm }
         its(:name) { should == "demo2-fw" }
         its(:info) { should == "XenOVF Generated" }
+        its(:description) { should == "Imported from an OVF/OVA package."}
         its(:operating_system) { should == "XenOVF Created Export" }
         its(:cpus) { should == 1 }
         its(:memory) { should == 1024 }
@@ -800,6 +804,7 @@ describe 'VmPackage' do
         let(:vm) { ovf.virtual_systems.first }
         subject { vm }
         its(:name) { should == "stress" }
+        its(:description) { should == "minimal centos 6.2 with chef"}
         its(:info) { should == "XenOVF Generated" }
         its(:operating_system) { should == "CentOS release 6.2 (Final)" }
         its(:cpus) { should == 1 }

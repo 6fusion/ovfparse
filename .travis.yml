@@ -4,4 +4,4 @@ rvm:
   - 1.8.7
   - jruby-19mode # JRuby in 1.9 mode
   - jruby-18mode # JRuby in 1.8 mode
-script: bundle exec rake
+script: pwd; ls -1 spec/fixtures/*.ovf; bundle exec rake

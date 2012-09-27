@@ -1,4 +1,5 @@
 require 'rake/gempackagetask' 
+require 'rspec/core/rake_task'
 
 spec = Gem::Specification.new do |s| 
   s.name = "ovfparse"
@@ -22,3 +23,11 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_tar = true 
 end 
 
+desc 'Default: run specs.'
+task :default => :spec
+
+desc "Run specs"
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = "./spec/**/*_spec.rb" # don't need this, it's default.
+  # Put spec opts in a file named .rspec in root
+end

@@ -79,7 +79,7 @@ describe 'VmPackage' do
     its(:url) { should eql("#{FIXTURE_PATH}/ComplexOVF-VMW-V8.ovf") }
     its(:uri) { should eql("file://#{FIXTURE_PATH}/ComplexOVF-VMW-V8.ovf") }
     its(:base_path) { should be_nil }
-    its(:name) { should eql('complexOVF-VMW-V8.ovf') }
+    its(:name) { should eql('ComplexOVF-VMW-V8.ovf') }
     its(:version) { should be_nil }
     its(:protocol) { should == "file" }
     #it { should be_valid }
@@ -281,13 +281,13 @@ describe 'VmPackage' do
   end
 
   describe 'ComplexVAPP.ovf' do
-    let(:ovf) { VmPackage.create('file://spec/fixtures/complexVAPP.ovf').fetch }
+    let(:ovf) { VmPackage.create('file://spec/fixtures/ComplexVAPP.ovf').fetch }
     subject { ovf }
     it { should be_a_kind_of(FileVmPackage) }
-    its(:url) { should eql('spec/fixtures/complexVAPP.ovf') }
-    its(:uri) { should eql('file://spec/fixtures/complexVAPP.ovf') }
+    its(:url) { should eql('spec/fixtures/ComplexVAPP.ovf') }
+    its(:uri) { should eql('file://spec/fixtures/ComplexVAPP.ovf') }
     its(:base_path) { should be_nil }
-    its(:name) { should eql('complexVAPP.ovf') }
+    its(:name) { should eql('ComplexVAPP.ovf') }
     its(:version) { should be_nil }
     its(:protocol) { should == "file" }
     #it { should be_valid }

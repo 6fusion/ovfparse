@@ -3,8 +3,9 @@ require 'spec_helper'
 describe VirtualSystem do
 
   describe 'MyLampService' do
+    let(:raw_xml) {open('spec/fixtures/my_lamp_service_virtual_system.xml').read }
     let(:xml) do
-      (Nokogiri::XML(open('spec/fixtures/my_lamp_service_virtual_system.xml'))/'VirtualSystem').first
+      (Nokogiri::XML.fragment(raw_xml)/'VirtualSystem').first
     end
     let(:vm) { VirtualSystem.new(xml) }
     subject { vm }

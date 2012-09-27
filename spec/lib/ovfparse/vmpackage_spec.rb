@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe 'VmPackage' do
   describe 'someOVF.ovf' do
-    let(:ovf) { VmPackage.create('file://./spec/fixtures/someOVF.ovf').fetch }
+    let(:ovf) { VmPackage.create("file://#{FIXTURE_PATH}/someOVF.ovf").fetch }
     subject { ovf }
     it { should be_a_kind_of(FileVmPackage) }
-    its(:url) { should eql('./spec/fixtures/someOVF.ovf') }
-    its(:uri) { should eql('file://./spec/fixtures/someOVF.ovf') }
+    its(:url) { should eql("#{FIXTURE_PATH}/someOVF.ovf") }
+    its(:uri) { should eql("file://#{FIXTURE_PATH}/someOVF.ovf") }
     its(:base_path) { should be_nil }
     its(:name) { should eql('someOVF.ovf') }
     its(:version) { should == "1.0" }
